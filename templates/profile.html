@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profile - {{user_profile.user.username}}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+ 
+  
+ 
+ 
+  <script src="/app/"></script>
+  <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/uikit.js' %}"></script>
+
+  <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+  <style>
+    /* Customize the navbar */
+   
+    body{
+      margin-top: 50px;
+    }
+    .navbar {
+      background-color: #fff;
+      border-color: #eee;
+    }
+
+    /* Customize the link color */
+    .navbar-default .navbar-nav > li > a {
+      color: #777;
+    }
+
+    /* Customize the active link color */
+    .navbar-default .navbar-nav > .active > a, 
+    .navbar-default .navbar-nav > .active > a:hover, 
+    .navbar-default .navbar-nav > .active > a:focus {
+      color: #333;
+      background-color: transparent;
+    }
+
+    /* Customize the logo */
+    .navbar-brand {
+      font-size: 28px;
+      color: #333;
+    }
+
+    /* Customize the profile picture */
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      margin: 20px;
+      border-radius: 50%;
+      border: 5px solid #fff;
+    }
+
+    /* Customize the profile name */
+    .profile-name {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    /* Customize the bio */
+    .bio {
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    /* Customize the photos section */
+    .photo-grid {
+      margin-top: 30px;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    .pro{
+        display:flex;
+       flex-direction:row;
+      
+        
+    }
+    .feature-photo span{
+        padding-top: 40px;
+        padding-right: 40px;
+        font-size: 25px;
+        color:black;
+        padding-bottom: 10px;
+        font-weight: 0;
+    }
+    
+    .col-sm-4{
+        display:flex;
+        flex-direction: row;
+        padding-left: 50px;
+
+    }
+    .col-sm-4 li{
+     list-style: none;
+        padding-left: 50px;
+    }
+    .nav a img{
+      width:20px;
+      height:20px;
+      border-radius: 50%;
+    }
+    .photo-grid{
+          margin-bottom:200px;
+    }
+    .nav li{
+      padding-left:300px;
+    }
+    span {
+      padding-top:100px;
+    }
+    a{
+      text-decoration: none;
+    }
+    .btn a{
+      text-decoration: none;
+    }
+    .img{
+     
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+              <li><a href="/"><i class="glyphicon glyphicon-home"></i></a></li>
+              <li><a href="/serch"><i class="glyphicon glyphicon-search"></i></a></li>
+              <li ><a href="/profile/{{user.username}}"><img src="{{user_profile.profileimg.url}}"></img></a></li>
+             
+              
+            </ul>
+        </div>
+    </nav>
+
+
+
+
+
+<!-- Navigation -->
+<div class="inline" style="padding-left: 1250px;">
+  <a href="/signin"><button class="btn">logout</button></a>
+</div>
+
+<!-- Profile -->
+<div class="container-fluid "   >
+    <div class="row"  >
+      <div class="col-sm-3">
+        <img  src="{{user_profile.profileimg.url}}" alt="Profile Picture" class="profile-pic">
+      </div>
+      <div class="feature-photo">
+        <form action="/follow" method="POST"  >
+            {% csrf_token %}
+           
+            
+            {% if user_post_length == 0 %}
+            <span style="color: black; font-size: 27px;"><b>No</b> Post</span>
+            {% elif user_post_length == 1 %}
+            <span style="color: black; font-size: 27px;"><b>{{user_post_length}} </b>Post</span>
+            {% else %}
+            <span style="color: black; font-size: 27px;"><b>{{user_post_length}}</b> Posts</span>
+            {% endif %}
+
+            {% if user_followers == 0 or user_followers == 1 %}
+            <span style="color: black; font-size: 27px;"><b>{{user_followers}}</b> follower</span>
+            {% else %}
+            <span style="color: black; font-size: 27px;"><b>{{user_followers}}</b> followers</span>
+            {% endif %}
+
+
+           <span style="color: black; font-size: 27px;"><b>{{user_following}}</b> following</span>
+
+            <input type="hidden" value="{{user.username}}" name="follower" />
+            <input type="hidden" value="{{user_object.username}}" name="user" />
+
+          {% if user_object.username == user.username %}
+          <br><br><span ><button class="btn"><a href="/settings" data-ripple="">Edit Profile</a></span></button>
+           <span><button class="btn"><a href="/apost" data-ripple="">Add post</a></span></button>
+           {% else %}
+           <a data-ripple=""><button type="submit" class="btn">{{button_text}}</button></a>
+           {% endif %}
+        </form>
+    <h4 class="profile-name">{{user_profile.user.username}}</h1>
+      <p class="bio">{{user_profile.bio}}</p>
+      <p style="font-size: small; color: #777;">{{user_profile.location}}</p>
+    </div>
+</div>
+<!-- Photos -->
+<h2 style="padding-left:10px">Posts</h2>
+<hr>
+<div class="row photo-grid">
+  <div class="col-sm-4">
+    <!--<img src="https://via.placeholder.com/350x350" alt="Photo 1">-->
+    {% for post in user_posts %}
+	<li >
+		<a  href="{{post.image.url}}" >
+		<img class="img" src="{{post.image.url}}" style="height: 250px; width: 300px;" alt=""></a>
+    {% if user_object.username == user.username %}
+    <a class="btn btn-outline-danger" href="/delpost/{{post.id}}">Delete</a>
+    {% else %}
+    {% endif %}
+	</li>
+	{% endfor %}
+  </div>
+  <script data-cfasync="false" src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script><script src="{% static 'js/main.min.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</div>
+</div>
+
+ 
+</body>
+</html>    
