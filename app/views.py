@@ -8,6 +8,9 @@ from itertools import chain
 import random
 
 # Create your views here.
+def manage(request):
+    return render(request,"signup.html")
+
 
 @login_required(login_url='signin')
 def index(request):
