@@ -15,5 +15,5 @@ urlpatterns = [
     path('signin', views.signin, name='signin'),
     path('logout', views.logout, name='logout'),
     path('delpost/<id>',views.delpost,name="delpost"),
-    path('seti',views.seti,name='seti')
+    path('manage',views.manage,name='manage')
 ]
